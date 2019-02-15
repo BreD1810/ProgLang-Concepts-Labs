@@ -24,3 +24,7 @@ filehandler :: IOException -> IO ()
 filehandler e = do let err = show (e :: IOException)
                    hPutStr stderr ("Warning: Couldn't open input/output file: " ++ err)
                    return ()
+
+main :: IO ()
+main = do
+    multiFileZipL ()
