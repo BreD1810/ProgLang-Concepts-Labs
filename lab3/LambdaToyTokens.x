@@ -41,7 +41,7 @@ data Token =
   TokenFunctionType AlexPosn  |
   TokenLessThan AlexPosn      |
   TokenPlus AlexPosn          |
-  TokenChar AlexPn char       |
+  TokenVar AlexPn char       |
   TokenIf AlexPosn            |
   TokenThen AlexPosn          |
   TokenElse AlexPosn          |
