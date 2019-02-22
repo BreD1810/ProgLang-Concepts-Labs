@@ -15,7 +15,7 @@ tokens :-
   '->'        { tok (\p s -> TokenFunctionType p) }
   \<        { tok (\p s -> TokenLessThan p) }
   \+        { tok (\p s -> TokenPlus p) }
-  $char     { tok (\p s -> TokenChar p (read s))}
+  $char     { tok (\p s -> TokenVar p (read s))}
   if        { tok (\p s -> TokenIf p) }
   then      { tok (\p s -> TokenThen p) }
   else      { tok (\p s -> TokenElse p) }
@@ -25,6 +25,7 @@ tokens :-
   \(        { tok (\p s -> TokenLParen p) }
   \)        { tok (\p s -> TokenRParen p) }
   \:        { tok (\p s -> TokenColon p) }
+  \\        { tok (\p s -> TokenLambda p) }
 
 { 
 
@@ -41,7 +42,7 @@ data Token =
   TokenFunctionType AlexPosn  |
   TokenLessThan AlexPosn      |
   TokenPlus AlexPosn          |
-  TokenVar AlexPn char       |
+  TokenVar AlexPn char        |
   TokenIf AlexPosn            |
   TokenThen AlexPosn          |
   TokenElse AlexPosn          |
@@ -50,7 +51,8 @@ data Token =
   TokenIn AlexPosn            |
   TokenLParen AlexPosn        |
   TokenRParen AlexPosn        |
-  TokenColon AlexPosn     
+  TokenColon AlexPosn         |
+  TokenLambda AlexPosn
   deriving (Eq, Show)   
 
 tokenPosn :: Token -> String
@@ -60,7 +62,7 @@ tokenPosn (TokenFalse (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ sh
 tokenPosn (TokenFunctionType (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenLessThan (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenPlus (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
-tokenPosn (TokenChar (AlexPn offset lineNo column) _) = show(lineNo) ++ ":" ++ show(column)
+tokenPosn (TokenVarr (AlexPn offset lineNo column) _) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenIf (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenThen (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenElse (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
@@ -70,5 +72,6 @@ tokenPosn (TokenIn (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(
 tokenPosn (TokenLParen (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenEquals (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenColon (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
+tokenPosn (TokenLambda (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 
 }
