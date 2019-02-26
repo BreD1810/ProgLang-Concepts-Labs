@@ -10,6 +10,8 @@ import LambdaToyTokens
     int     { TokenInt _ $$}
     true    { TokenTrue _ }
     false   { TokenFalse _ }
+    Int     { TokenIntType _ }
+    Bool    { TokenBoolType _ }
     '->'    { TokenFunctionType _ }
     '<'     { TokenLessThan _ }
     '+'     { TokenPlus _ }
@@ -25,39 +27,34 @@ import LambdaToyTokens
     ':'     { TokenColon _ }
     '\\'     { TokenLambda _ }
 
-%right 'in'
 %right then
 %right else
+%right in
 %right '\\'
 %nonassoc '<'
 %left '+'
 %% 
-Type : int              { IntType $1 }
-     | true             { BoolTypeTrue }
-     | false            { BoolTypeFalse }
+
+Exp : int                                           { Int $1 }
+    | true                                          { TrueBoolean }
+    | false                                         { FalseBoolean }
+    | Exp '<' Exp                                   { LessThan $1 $3 }
+    | Exp '+' Exp                                   { Add $1 $3 }
+    | var                                           { Var $1 }
+    | if Exp then Exp else Exp                      { Cond $2 $4 $6 }
+    | '\\' '(' var ':' Type ')' Exp                 { Lambda $3 $5 $7}
+    | let var '=' Exp in Exp                        { Let $2 $4 $6 }
+    | Exp Exp                                       { App $1 $2 }
+    | '(' Exp ')'                                   { $2 }
+
+Type : Int              { IntType }
+     | Bool             { BoolType }
      | Type '->' Type   { FunctionType $1 $3 }
 
-Exp : int                                       { Int $1 }
-    | true                                      { TrueBoolean }
-    | false                                     { FalseBoolean }
-    | Exp '<' Exp                               { LessThan $1 $3 }
-    | Exp '+' Exp                               { Add $1 $3 }
-    | var                                       { Var $1 }
-    | if Exp then Exp else Exp                  { Cond $2 $4 $6 }
-    | '\\' '(' var ':' Type ')' Exp             { Lambda $3 $5 $7}
-    | let '(' var ':' Type ')' '=' Exp in Exp   { Let $3 $5 $8 $10 }
-    | Exp Exp                                   { App $1 $2 }
-    
 { 
 parseError :: [Token] -> a
 parseError [] = error "Unknown Parse Error"
 parseError (t:ts) = error ("Parse error at line:column " ++ (tokenPosn t))
-
-data Type = IntType Int
-          | BoolTypeTrue
-          | BoolTypeFalse
-          | FunctionType Type Type
-          deriving Show
 
 data Exp = Int Int
          | TrueBoolean
@@ -67,8 +64,13 @@ data Exp = Int Int
          | Var String
          | Cond Exp Exp Exp
          | Lambda String Type Exp
-         | Let String Type Exp Exp
+         | Let String Exp Exp
          | App Exp Exp
          deriving Show
+
+data Type = IntType
+          | BoolType
+          | FunctionType Type Type
+          deriving Show
 
 } 
