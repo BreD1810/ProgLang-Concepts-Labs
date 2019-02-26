@@ -42,7 +42,7 @@ data Token =
   TokenFunctionType AlexPosn  |
   TokenLessThan AlexPosn      |
   TokenPlus AlexPosn          |
-  TokenVar AlexPn char        |
+  TokenVar AlexPosn Char      |
   TokenIf AlexPosn            |
   TokenThen AlexPosn          |
   TokenElse AlexPosn          |
@@ -62,7 +62,7 @@ tokenPosn (TokenFalse (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ sh
 tokenPosn (TokenFunctionType (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenLessThan (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenPlus (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
-tokenPosn (TokenVarr (AlexPn offset lineNo column) _) = show(lineNo) ++ ":" ++ show(column)
+tokenPosn (TokenVar (AlexPn offset lineNo column) _) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenIf (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenThen (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenElse (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
@@ -70,7 +70,6 @@ tokenPosn (TokenLet (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show
 tokenPosn (TokenEquals (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenIn (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenLParen (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
-tokenPosn (TokenEquals (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenColon (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 tokenPosn (TokenLambda (AlexPn offset lineNo column)) = show(lineNo) ++ ":" ++ show(column)
 
