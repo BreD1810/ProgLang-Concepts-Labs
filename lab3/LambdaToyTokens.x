@@ -4,28 +4,28 @@ module LambdaToyTokens where
 
 %wrapper "posn" 
 $digit = 0-9
-$char = a-z
+$alpha = [a-zA-Z]  
 
 tokens :-
   $white+       ; 
   "--".*        ; 
-  $digit    { tok (\p s -> TokenInt p (read s)) }
-  true      { tok (\p s -> TokenTrue p) }
-  false     { tok (\p s -> TokenFalse p)}
-  '->'        { tok (\p s -> TokenFunctionType p) }
-  \<        { tok (\p s -> TokenLessThan p) }
-  \+        { tok (\p s -> TokenPlus p) }
-  $char     { tok (\p s -> TokenVar p (read s))}
-  if        { tok (\p s -> TokenIf p) }
-  then      { tok (\p s -> TokenThen p) }
-  else      { tok (\p s -> TokenElse p) }
-  let       { tok (\p s -> TokenLet p) }
-  \=        { tok (\p s -> TokenEquals p) }
-  in        { tok (\p s -> TokenIn p) }
-  \(        { tok (\p s -> TokenLParen p) }
-  \)        { tok (\p s -> TokenRParen p) }
-  \:        { tok (\p s -> TokenColon p) }
-  \\        { tok (\p s -> TokenLambda p) }
+  $digit                            { tok (\p s -> TokenInt p (read s)) }
+  true                              { tok (\p s -> TokenTrue p) }
+  false                             { tok (\p s -> TokenFalse p)}
+  '->'                              { tok (\p s -> TokenFunctionType p) }
+  \<                                { tok (\p s -> TokenLessThan p) }
+  \+                                { tok (\p s -> TokenPlus p) }
+  $alpha [$alpha $digit \_ \’]*     { tok (\p s -> TokenVar p (read s))}
+  if                                { tok (\p s -> TokenIf p) }
+  then                              { tok (\p s -> TokenThen p) }
+  else                              { tok (\p s -> TokenElse p) }
+  let                               { tok (\p s -> TokenLet p) }
+  \=                                { tok (\p s -> TokenEquals p) }
+  in                                { tok (\p s -> TokenIn p) }
+  \(                                { tok (\p s -> TokenLParen p) }
+  \)                                { tok (\p s -> TokenRParen p) }
+  \:                                { tok (\p s -> TokenColon p) }
+  \\                                { tok (\p s -> TokenLambda p) }
 
 { 
 
@@ -42,7 +42,7 @@ data Token =
   TokenFunctionType AlexPosn  |
   TokenLessThan AlexPosn      |
   TokenPlus AlexPosn          |
-  TokenVar AlexPosn Char      |
+  TokenVar AlexPosn String    |
   TokenIf AlexPosn            |
   TokenThen AlexPosn          |
   TokenElse AlexPosn          |

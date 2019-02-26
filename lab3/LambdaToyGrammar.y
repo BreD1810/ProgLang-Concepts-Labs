@@ -44,7 +44,7 @@ Exp : int                                       { Int $1 }
     | Exp '+' Exp                               { Add $1 $3 }
     | var                                       { Var $1 }
     | if Exp then Exp else Exp                  { Cond $2 $4 $6 }
-    | '\\' '(' var ':' Type ')' Exp              { Lambda $3 $5 $7}
+    | '\\' '(' var ':' Type ')' Exp             { Lambda $3 $5 $7}
     | let '(' var ':' Type ')' '=' Exp in Exp   { Let $3 $5 $8 $10 }
     | Exp Exp                                   { App $1 $2 }
     
@@ -64,10 +64,10 @@ data Exp = Int Int
          | FalseBoolean
          | LessThan Exp Exp
          | Add Exp Exp
-         | Var Char
+         | Var String
          | Cond Exp Exp Exp
-         | Lambda Char Type Exp
-         | Let Char Type Exp Exp
+         | Lambda String Type Exp
+         | Let String Type Exp Exp
          | App Exp Exp
          deriving Show
 
