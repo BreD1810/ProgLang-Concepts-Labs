@@ -14,7 +14,7 @@ tokens :-
   false                             { tok (\p s -> TokenFalse p)}
   Int                               { tok (\p s -> TokenIntType p)}
   Bool                              { tok (\p s -> TokenBoolType p)}
-  '->'                              { tok (\p s -> TokenFunctionType p) }
+  "->"                              { tok (\p s -> TokenFunctionType p) }
   \<                                { tok (\p s -> TokenLessThan p) }
   \+                                { tok (\p s -> TokenPlus p) }
   if                                { tok (\p s -> TokenIf p) }
