@@ -27,12 +27,17 @@ import LambdaToyTokens
     ':'     { TokenColon _ }
     '\\'     { TokenLambda _ }
 
-%right then
-%right else
+%left '->'
+%right let
 %right in
-%right '\\'
-%nonassoc '<'
+%nonassoc if
+%nonassoc then
+%nonassoc else
+%nonassoc int true false var '(' ')'
+%left '\\'
+%left '<'
 %left '+'
+%left APP
 %% 
 
 Exp : int                                           { Int $1 }
@@ -44,7 +49,7 @@ Exp : int                                           { Int $1 }
     | if Exp then Exp else Exp                      { Cond $2 $4 $6 }
     | '\\' '(' var ':' Type ')' Exp                 { Lambda $3 $5 $7}
     | let var '=' Exp in Exp                        { Let $2 $4 $6 }
-    | Exp Exp                                       { App $1 $2 }
+    | Exp Exp %prec APP                             { App $1 $2 }
     | '(' Exp ')'                                   { $2 }
 
 Type : Int              { IntType }
